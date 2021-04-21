@@ -7,6 +7,8 @@ import { QuestionsState, Difficulty } from './API';
 // Styles
 import { GlobalStyle, Wrapper } from './App.styles';
 
+import firebase from "./firebase";
+
 export type AnswerObject = {
   question: string;
   answer: string;
@@ -23,6 +25,8 @@ const App: React.FC = () => {
   const [userAnswers, setUserAnswers] = useState<AnswerObject[]>([]);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(true);
+
+
 
   const startTrivia = async () => {
     setLoading(true);
@@ -68,6 +72,13 @@ const App: React.FC = () => {
     }
   };
 
+  const messaging = firebase.messaging();
+  messaging.requestPermission().then((response) => {
+    return messaging.getToken()
+  }).then((token) => {
+    console.log('token', token);
+  })
+
   return (
     <>
       <GlobalStyle />
@@ -99,5 +110,7 @@ const App: React.FC = () => {
     </>
   );
 };
+
+
 
 export default App;
